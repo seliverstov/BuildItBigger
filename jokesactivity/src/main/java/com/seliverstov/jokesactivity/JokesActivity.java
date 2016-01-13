@@ -21,6 +21,7 @@ public class JokesActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String text = intent.getStringExtra(Intent.EXTRA_TEXT);
         TextView joke = (TextView)findViewById(R.id.joke);
+        if (text==null) text = getString(R.string.error_message);
         joke.setText(text);
 
     }

@@ -7,6 +7,7 @@ android {
     defaultConfig {
         applicationId "com.udacity.gradle.builditbigger"
         multiDexEnabled true
+        testInstrumentationRunner "com.android.test.runner.MultiDexTestRunner"
         minSdkVersion 10
         targetSdkVersion 23
         versionCode 1

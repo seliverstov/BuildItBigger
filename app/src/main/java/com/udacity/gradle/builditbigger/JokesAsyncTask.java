@@ -3,6 +3,7 @@ package com.udacity.gradle.builditbigger;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
@@ -17,6 +18,7 @@ import java.io.IOException;
  * Created by a.g.seliverstov on 12.01.2016.
  */
 public class JokesAsyncTask extends AsyncTask<Context, Void, String> {
+    private static final String TAG = JokesAsyncTask.class.getSimpleName();
     private static JokesApi jokesApiService = null;
     private Context context;
 
@@ -45,7 +47,8 @@ public class JokesAsyncTask extends AsyncTask<Context, Void, String> {
         try {
             return jokesApiService.getJoke().execute().getText();
         } catch (IOException e) {
-            return e.getMessage();
+            Log.e(TAG, e.getMessage(), e);
+            return null;
         }
     }
 

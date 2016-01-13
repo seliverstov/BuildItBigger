@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">JokesActivity</string>
+    <string name="app_name">Joke</string>
+    <string name="error_message">Sorry, no joke for you right now :( Try later please.</string>
 </resources>
