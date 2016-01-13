@@ -30,7 +30,7 @@ public class JokesAsyncTaskTest extends AndroidTestCase {
             }
         };
 
-        task.execute(getContext());
+        task.execute();
 
         signal.await(60, TimeUnit.SECONDS);
 

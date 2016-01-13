@@ -17,3 +17,14 @@ allprojects {
         jcenter()
     }
 }
+
+task runBackend (dependsOn: [':jokesbackend:appengineRun']) {
+    project(":jokesbackend").afterEvaluate { b -> b.extensions.appengine.daemon = true }
+}
+task testBackend (dependsOn: [':app:connectedAndroidTest'])
+task stopBackend (dependsOn: [':jokesbackend:appengineStop'])
+
+task testGCE (dependsOn: ['runBackend','testBackend','stopBackend'])
+
+testBackend.mustRunAfter runBackend
+stopBackend.mustRunAfter testBackend
