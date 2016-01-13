@@ -27,4 +27,4 @@ task stopBackend (dependsOn: [':jokesbackend:appengineStop'])
 task testGCE (dependsOn: ['runBackend','testBackend','stopBackend'])
 
 testBackend.mustRunAfter runBackend
-stopBackend.mustRunAfter testBackend
+testBackend.finalizedBy stopBackend
