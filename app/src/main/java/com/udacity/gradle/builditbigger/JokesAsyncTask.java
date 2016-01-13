@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
@@ -17,32 +19,28 @@ import java.io.IOException;
 /**
  * Created by a.g.seliverstov on 12.01.2016.
  */
-public class JokesAsyncTask extends AsyncTask<Context, Void, String> {
+public class JokesAsyncTask extends AsyncTask<String, Void, String> {
+    public static final String DEFAULT_ROOT_URL = "http://10.0.2.2:8080/_ah/api/";
+
     private static final String TAG = JokesAsyncTask.class.getSimpleName();
     private static JokesApi jokesApiService = null;
-    private Context context;
+
 
     @Override
-    protected String doInBackground(Context... params) {
-        if(jokesApiService == null) {  // Only do this once
-            JokesApi.Builder builder = new JokesApi.Builder(AndroidHttp.newCompatibleTransport(),
-                    new AndroidJsonFactory(), null)
-                    // options for running against local devappserver
-                    // - 10.0.2.2 is localhost's IP address in Android emulator
-                    // - turn off compression when running against local devappserver
-                    .setRootUrl("http://10.0.2.2:8080/_ah/api/")
+    protected String doInBackground(String... params) {
+        String url = (params==null || params.length==0 || params[0]==null || params[0].isEmpty())? DEFAULT_ROOT_URL: params[0];
+
+        if(jokesApiService == null) {
+            JokesApi.Builder builder = new JokesApi.Builder(AndroidHttp.newCompatibleTransport(), new AndroidJsonFactory(), null)
+                    .setRootUrl(url)
                     .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
                         @Override
                         public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest) throws IOException {
                             abstractGoogleClientRequest.setDisableGZipContent(true);
                         }
                     });
-            // end options for devappserver
-
             jokesApiService = builder.build();
         }
-
-        context = params[0];
 
         try {
             return jokesApiService.getJoke().execute().getText();
@@ -50,12 +48,5 @@ public class JokesAsyncTask extends AsyncTask<Context, Void, String> {
             Log.e(TAG, e.getMessage(), e);
             return null;
         }
-    }
-
-    @Override
-    protected void onPostExecute(String result) {
-        Intent intent = new Intent(context, JokesActivity.class);
-        intent.putExtra(Intent.EXTRA_TEXT,result);
-        context.startActivity(intent);
     }
 }

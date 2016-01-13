@@ -9,19 +9,31 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivityFragment">
 
-    <TextView
-        android:layout_gravity="center_horizontal"
-        android:text="@string/instructions"
+    <ProgressBar
+        android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/instructions_text_view" />
+        android:layout_gravity="center_horizontal"
+        android:visibility="gone"/>
+    <LinearLayout
+        android:id="@+id/mainView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextView
+            android:layout_gravity="center_horizontal"
+            android:text="@string/instructions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/instructions_text_view" />
 
-    <Button
-        android:layout_gravity="center_horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/button_text"
-        android:onClick="tellJoke" />
+        <Button
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/button_text"
+            android:onClick="tellJoke" />
+    </LinearLayout>
 
     <include layout="@layout/inc_ad"/>
 
