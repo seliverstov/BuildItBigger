@@ -18,13 +18,38 @@ allprojects {
     }
 }
 
+
 task runBackend (dependsOn: [':jokesbackend:appengineRun']) {
-    project(":jokesbackend").afterEvaluate { b -> b.extensions.appengine.daemon = true }
+    evaluationDependsOn ':jokesbackend'
+
+    project(":jokesbackend") {
+        appengine {
+            daemon true
+        }
+    }
 }
-task testBackend (dependsOn: [':app:connectedAndroidTest'])
-task stopBackend (dependsOn: [':jokesbackend:appengineStop'])
 
-task testGCE (dependsOn: ['runBackend','testBackend','stopBackend'])
+task testBackend (dependsOn: [':app:connectedAndroidTest']) {
+    evaluationDependsOn ":app"
+    project(':app').connectedFreeDebugAndroidTest {
+        ignoreFailures = true
+    }
+    project(':app').connectedPaidDebugAndroidTest {
+        ignoreFailures = true
+    }
+    mustRunAfter runBackend
+}
 
-testBackend.mustRunAfter runBackend
-testBackend.finalizedBy stopBackend
+task stopBackend (dependsOn: [':jokesbackend:appengineStop']) {
+    mustRunAfter testBackend
+}
+
+task testGCE (dependsOn: ['runBackend','testBackend','stopBackend']){
+
+}
+
+
+
+
+
+
